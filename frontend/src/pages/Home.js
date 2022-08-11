@@ -1,32 +1,36 @@
 import { useEffect, useState } from "react";
 
-//components
+// components
 import WorkoutDetails from "../components/WorkoutDetails";
+import WorkoutForm from "../components/WorkoutForm";
 
 const Home = () => {
-  const [workouts, setWorkouts] = useState();
+  const [workouts, setWorkouts] = useState(null);
 
   useEffect(() => {
+    // console.log('l');
     const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts");
-      const json = await response.json().then(console.log("bla bla bla"));
-
+      
+      const response = await fetch('http://localhost:3001/api/workouts');
+      
+      const json = await response.json(null)
       if (response.ok) {
-        setWorkouts(json);
+        setWorkouts(json)
       }
-    };
+    }
 
-    fetchWorkouts();
-  }, []);
+    fetchWorkouts()
+  }, [])
+
   return (
-    <div className="Home">
+    <div className="home">
       <div className="workouts">
-        {workouts &&
-          workouts.map((workout) => (
-            <WorkoutDetails key={workout._id} workout={workout} />
-          ))}
+        {workouts && workouts.map((workout) => (
+          <WorkoutDetails workout={workout} key={workout._id} />
+        ))}
       </div>
+      <WorkoutForm />
     </div>
-  );
-};
+  )
+}
 export default Home;
